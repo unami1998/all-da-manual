@@ -1,0 +1,86 @@
+/* 기본 스타일 초기화 및 폰트 설정 */
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f9; /* 배경색 추가 */
+            display: flex; /* TOC와 Content를 옆으로 나열하기 위해 flex 사용 */
+        }
+
+        /* 목차(TOC) 스타일 */
+        #toc-list {
+            position: sticky; /* 스크롤 시 메뉴 고정 */
+            top: 0;
+            list-style: none;
+            padding: 20px;
+            margin: 0;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            width: 250px; /* 메뉴 너비 지정 */
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+        }
+        #toc-list li {
+            margin-bottom: 10px;
+        }
+        #toc-list a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 5px 0;
+            display: block;
+            transition: color 0.2s;
+        }
+        #toc-list a:hover {
+            color: #007bff; /* 마우스 오버 색상 */
+        }
+
+        /* 본문 콘텐츠 스타일 */
+        #content {
+            flex-grow: 1; /* 남은 공간 모두 사용 */
+            padding: 40px;
+            max-width: 900px; /* 콘텐츠 최대 너비 제한 */
+            margin: 0 auto; /* 중앙 정렬 */
+        }
+
+        /* 각 섹션 스타일 */
+        .section {
+            background-color: #ffffff;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #007bff; /* 포인트 색상 */
+        }
+
+        /* 제목 스타일 */
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: #333;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #555;
+            font-size: 1.4em;
+            margin-top: 25px;
+        }
+
+        /* 이미지 스타일 (줄바꿈 및 여백) */
+        .section-img {
+            display: block; /* 이미지를 블록 요소로 만들어 줄바꿈 적용 */
+            max-width: 100%; /* 화면 크기에 맞게 이미지 크기 조정 */
+            height: auto;
+            margin: 20px 0; /* 이미지 위아래 여백 */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* 강조 텍스트 스타일 */
+        .highlight {
+            color: #dc3545; /* 빨간색 계열로 강조 */
+            font-weight: bold;
+        }
