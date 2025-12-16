@@ -10,20 +10,23 @@
 </head>
 
 <body>
-    <!-- <header style="width:100%;background:#38805b;color:#fff;padding:24px 0 18px 0;text-align:center;box-shadow:0 2px 8px rgba(56,128,91,0.08);margin-bottom:0;">
-        <h1 style="margin:0;font-size:2.2em;letter-spacing:-1px;font-weight:800;">all-da 설명서</h1>
-        <p style="margin:8px 0 0 0;font-size:1.1em;font-weight:400;opacity:0.92;">서비스 이용 가이드 & 주요 기능 안내</p>
-    </header> -->
-    <ul id="toc-list">
-        <li><a href="#dashboard" data-target="dashboard">🏠 대시보드</a></li>
-        <li><a href="#mission-management" data-target="mission-management">✅ 미션관리</a></li>
-        <li><a href="#premium_mission_management" data-target="premium_mission">👑 프리미엄 미션관리</a></li>
-        <li><a href="#reward_a_submit" data-target="reward_a_submit">🎁 리워드A 접수</a></li>
-        <li><a href="#keyword_helper" data-target="keyword_helper">🔍 키워드 도우미</a></li>
-        <li><a href="#usage_history" data-target="usage_history">🧾 이용내역</a></li>
-        <li><a href="#account" data-target="account">⚙️ 계정</a></li>
-        <li><a href="#support" data-target="support">❓ 지원</a></li>
-    </ul>
+    <button id="toc-toggle" aria-label="목차 열기">🧭 목차</button>
+
+    <div id="sidebar-overlay"></div>
+
+    <div id="sidebar">
+        <h3 style="font-size:1.2em; font-weight:700; color:#38805b; margin-top:0; margin-bottom:18px; letter-spacing:-0.01em;">🧭 목차</h3>
+        <ul id="toc-list">
+            <li><a href="#dashboard" data-target="dashboard">🏠 대시보드</a></li>
+            <li><a href="#mission-management" data-target="mission-management">✅ 미션관리</a></li>
+            <li><a href="#premium_mission_management" data-target="premium_mission">👑 프리미엄 미션관리</a></li>
+            <li><a href="#reward_a_submit" data-target="reward_a_submit">🎁 리워드A 접수</a></li>
+            <li><a href="#keyword_helper" data-target="keyword_helper">🔍 키워드 도우미</a></li>
+            <li><a href="#usage_history" data-target="usage_history">🧾 이용내역</a></li>
+            <li><a href="#account" data-target="account">⚙️ 계정</a></li>
+            <li><a href="#support" data-target="support">❓ 지원</a></li>
+        </ul>
+    </div>
 
     <div id="content">
         
@@ -124,6 +127,79 @@
 
 
     </div>
-</body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('#toc-list a');
+            const sidebar = document.getElementById('sidebar');
+            const tocToggle = document.getElementById('toc-toggle');
+            const overlay = document.getElementById('sidebar-overlay');
 
+            // 모바일 목차 토글 (버튼 다시 누르면 닫힘)
+            tocToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+
+            // 오버레이 클릭 시 사이드바 닫기
+            overlay.addEventListener('click', function () {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+
+            // 클릭 핸들러는 한 번만 등록
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        window.scrollTo({ top: targetElement.offsetTop, behavior: 'smooth' });
+                        // 모바일에서 목차 클릭 시 닫기
+                        sidebar.classList.remove('open');
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+
+            function updateActiveLink() {
+                const scrollPos = window.scrollY || window.pageYOffset;
+                const offset = 150; // 상단에서 150px 아래 기준
+                let current = '';
+
+                // 상단 기준으로 현재 보이는 섹션 찾기
+                for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i];
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    if (scrollPos + offset >= sectionTop && scrollPos + offset < sectionBottom) {
+                        current = section.id;
+                        break;
+                    }
+                }
+
+                // 스크롤이 맨 위에 있으면 첫 번째 섹션 활성화
+                if (!current && scrollPos < sections[0].offsetTop + 100) {
+                    current = sections[0].id;
+                }
+
+                // 스크롤이 맨 아래에 있으면 마지막 섹션 활성화
+                if (!current && (window.innerHeight + scrollPos) >= document.body.offsetHeight - 50) {
+                    current = sections[sections.length - 1].id;
+                }
+
+                navLinks.forEach(link => link.classList.remove('active'));
+                if (current) {
+                    const activeLink = document.querySelector(`#toc-list a[data-target="${current}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink, { passive: true });
+            window.addEventListener('resize', updateActiveLink);
+            updateActiveLink();
+        });
+    </script>
+</body>
 </html>
